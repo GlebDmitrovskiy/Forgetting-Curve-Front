@@ -1,15 +1,11 @@
-from os import waitpid
-from time import sleep
 from selenium.webdriver.common.by import By
 from locators.base_page_users_locators import BasePageUsersLocators
 from selenium import webdriver
 from pages.base_page import BasePageUsers
 import pytest
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from services.functions import text_generator, digit_generator
 from selenium.webdriver.support import expected_conditions as EC
-import json
 
 
 @pytest.fixture

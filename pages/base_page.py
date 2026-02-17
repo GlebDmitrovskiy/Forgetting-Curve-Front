@@ -1,9 +1,7 @@
-from services.functions import text_generator, digit_generator
-from selenium import webdriver
 from locators.base_page_users_locators import BasePageUsersLocators
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-base_page= BasePageUsersLocators()
+
 
 
 class BasePageUsers:
