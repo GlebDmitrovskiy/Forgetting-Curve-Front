@@ -62,11 +62,10 @@ def information_factory(information_page, browser, user_factory):
     information_page.click_information_button()
     information_page.create_user_information(data_information)
 
-
     yield data_information
     try:
         information_page.input_nickname_for_delete(data_information['nickname'])
-        information_page.delete_user_information()
+        information_page.input_delete_user_information(data_information['nickname'])
     except Exception:
         pass
 
@@ -78,6 +77,26 @@ class TestInformationPage:
         information_page.input_nickname(information_factory["nickname"])
         information_page.input_thesis(information_factory["thesis"])
         information_page.input_explanation(information_factory["explanation"])
-        assert information_factory["nickname"] == information_page.find(information_page.locators.input_nickname_locator).get_attribute("value")
-        assert information_factory["thesis"] == information_page.find(information_page.locators.input_thesis_locator).get_attribute("value")
-        assert information_factory["explanation"] == information_page.find(information_page.locators.explanation_locator).get_attribute("value")
+        assert information_factory["nickname"] == information_page.find(
+            information_page.locators.input_nickname_locator).get_attribute("value")
+        assert information_factory["thesis"] == information_page.find(
+            information_page.locators.input_thesis_locator).get_attribute("value")
+        assert information_factory["explanation"] == information_page.find(
+            information_page.locators.explanation_locator).get_attribute("value")
+
+    def test_get_information(self, information_page, information_factory, browser):
+        wait = WebDriverWait(browser, 10)
+        information_page.click_information_button()
+        information_page.input_nickname(information_factory["nickname"])
+        information_page.input_thesis(information_factory["thesis"])
+        information_page.input_explanation(information_factory["explanation"])
+        information_page.get_information()
+        dynamic_xpath = information_page.locators.response_get_user_information_tpl % information_factory["nickname"]
+        element = wait.until(EC.visibility_of_element_located((By.XPATH, dynamic_xpath)))
+        assert information_factory["nickname"] in element.text
+        assert information_factory["thesis"] in element.text
+        assert information_factory["explanation"] in element.text
+
+    def test_delete_user_information(self, information_page, information_factory, browser):
+        information_page.delete_user_information()
+        assert information_page.find(information_page.locators.delete_id_user_locator).get_attribute("value") == ""
